@@ -1,0 +1,26 @@
+Título: Insuficiencia Cardíaca Congestiva en Gatos
+
+Descripción:
+Condición donde el corazón no bombea suficiente sangre, causando acumulación de líquido en pulmones o abdomen.
+
+Síntomas:
+- Dificultad respiratoria
+- Letargo
+- Pérdida de apetito
+- Tos (raro en gatos)
+
+Diagnóstico:
+- Auscultación cardíaca
+- Radiografía torácica
+- Ecocardiograma
+
+Tratamiento:
+- Furosemida: 1-2 mg/kg cada 8-12h (diurético)
+- Enalapril: 0.5 mg/kg cada 12h (IECA)
+- Pimobendan: 0.25 mg/kg cada 12h (inotrópico positivo)
+
+Pronóstico:
+Variable según estadio. Control regular necesario.
+
+Fuentes: Cardiología Felina Avanzada, Dra. María López, 2024.
+

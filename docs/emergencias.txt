@@ -1,0 +1,16 @@
+Título: Protocolos de Emergencia Veterinaria
+
+Shock Hipovolémico:
+- Signos: mucosas pálidas, pulso débil, taquicardia, hipotermia.
+- Tratamiento: fluidos IV cristaloides (90 ml/kg en primera hora), oxígeno, monitoreo continuo.
+
+Intoxicación por Chocolate:
+- Síntomas: vómitos, diarrea, hiperactividad, convulsiones.
+- Tratamiento: inducir vómito si <2h, carbón activado, soporte vital.
+
+Golpe de Calor:
+- Enfriamiento rápido: agua tibia, ventilador, evitar hielo directo.
+- Fluidos IV, monitoreo de temperatura rectal cada 5 min.
+
+Fuentes: Manual de Urgencias Veterinarias, Hospital Vet Central, Lima 2025.
+

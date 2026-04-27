@@ -1,0 +1,33 @@
+
+# — RAG System Dependencies —
+# Instalación: pip install -r requirements.txt
+
+# Motor de búsqueda vectorial (versión compatible con Python 3.12+)
+faiss-cpu>=1.8.0
+
+# Embeddings locales (HuggingFace)
+sentence-transformers==2.7.0
+
+# Interfaz web
+streamlit==1.35.0
+
+# HTTP para comunicación con Ollama
+requests==2.31.0
+
+# Lectura de PDFs (principal)
+pdfplumber==0.10.3
+
+# Lectura de PDFs (fallback)
+PyPDF2==3.0.1
+
+# Utilidades numéricas (requerida por FAISS y sentence-transformers)
+numpy<2.0
+
+# Cliente local de IA
+ollama==0.2.1
+
+# Variables de entorno (opcional pero recomendado)
+python-dotenv==1.0.1
+
+
+
