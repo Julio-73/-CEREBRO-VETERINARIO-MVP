@@ -1,21 +1,30 @@
-# Entorno virtual de Python
+# Entornos virtuales
 venv/
-.env
+.env/
+
+# Archivos grandes y binarios
+*.dll
+*.so
+*.dylib
+*.exe
+*.bin
+*.h5
+*.ckpt
+*.pth
+*.pkl
+*.zip
+*.tar
+*.tar.gz
+*.rar
+*.7z
+
+# Archivos temporales
 __pycache__/
 *.pyc
 *.pyo
-*.db
-*.sqlite3
-
-# Archivos grandes o innecesarios
-*.dll
-*.exe
-*.so
-*.dylib
-
-# Opcional: si usas VS Code
-.vscode/
 *.log
+*.tmp
 
-
-
+# Otros
+.DS_Store
+Thumbs.db
