@@ -1,10 +1,29 @@
-# 🧠 Sistema RAG - MVP para Entrevista Técnica
+# 🧠 Cerebro Veterinario MVP
 
-> **Stack**: Python · FAISS · sentence-transformers · Ollama (phi) · Streamlit
+> **Stack**: Python · FAISS · sentence-transformers · Groq · Streamlit
 
 ---
 
-## ⚡ Inicio Rápido (5 pasos)
+## ⚡ Despliegue en Streamlit Cloud (Gratis)
+
+### 1. Obtén tu API key de Groq (gratis):
+- Ve a https://console.groq.com/
+- Crea una cuenta
+- Genera una API key
+
+### 2. Configura la variable de entorno en Streamlit Cloud:
+- En tu repositorio GitHub
+- Ve a Settings → Secrets
+- Agrega: `GROQ_API_KEY` = tu_api_key
+
+### 3. Conecta tu repositorio a Streamlit Cloud:
+- Ve a https://share.streamlit.io/
+- Conecta tu repositorio GitHub
+- Listo! 🎉
+
+---
+
+## ⚡ Desarrollo local
 
 ```bash
 # 1. Instalar Ollama y descargar modelo

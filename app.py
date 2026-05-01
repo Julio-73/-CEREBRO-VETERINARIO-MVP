@@ -58,7 +58,10 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 try:
-    from rag import initialize_rag, query_rag, EMBEDDING_MODEL, OLLAMA_MODEL, TOP_K, MIN_SIMILARITY
+    from rag import initialize_rag, query_rag, EMBEDDING_MODEL, GROQ_MODEL, TOP_K, MIN_SIMILARITY, GROQ_API_KEY
+    
+    # Determinar qué modelo usar
+    LLM_DISPLAY = f"Groq · {GROQ_MODEL}" if GROQ_API_KEY else "Ollama · llama3.2:1b"
 except ImportError as e:
     st.error(f"❌ Error importando rag.py: {e}")
     st.stop()
@@ -137,9 +140,9 @@ with st.sidebar:
     |---|---|
     | 🗄️ Vector DB | FAISS |
     | 🤗 Embeddings | `{EMBEDDING_MODEL}` |
-    | 🦙 LLM | Ollama · `{OLLAMA_MODEL}` |
+    | 🤖 LLM | {LLM_DISPLAY} |
     | 🚀 Frontend | Streamlit |
-    """)
+    """.format(LLM_DISPLAY=LLM_DISPLAY))
 
     st.divider()
 

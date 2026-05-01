@@ -33,14 +33,17 @@ INDEX_PATH    = Path("data/faiss.index")
 CHUNKS_PATH   = Path("data/chunks.pkl")   
 
 EMBEDDING_MODEL = "all-MiniLM-L6-v2"  
-OLLAMA_URL      = "http://localhost:11434/api/generate"
-OLLAMA_MODEL    = "llama3.2:1b" 
+
+# ⭐ GROQ (gratis) - Alternativa a Ollama para Streamlit Cloud
+# Obtén tu API key gratis en: https://console.groq.com/
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
+GROQ_MODEL = "llama-3.1-8b-instant"  # Modelo gratis y rápido
 
 # ⭐ CAMBIOS CLAVE AQUÍ
-CHUNK_SIZE    = 500    # ⬅️ REDUCIDO de 1000 a 500 (más chunks = más chances de encontrar)
-CHUNK_OVERLAP = 100    # ⬅️ REDUCIDO de 200 a 100
-TOP_K         = 5      # ⬅️ AUMENTADO de 3 a 5
-MIN_SIMILARITY = 0.2   # ⭐ NUEVO: Umbral mínimo de similitud
+CHUNK_SIZE    = 500    
+CHUNK_OVERLAP = 100    
+TOP_K         = 5      
+MIN_SIMILARITY = 0.2
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -350,6 +353,75 @@ PREGUNTA DEL USUARIO: {query}
 
 RESPUESTA:"""
 
+    # ⭐ LÓGICA DUAL: Groq (nube) o Ollama (local)
+    if GROQ_API_KEY:
+        # === MODO GROQ (Streamlit Cloud) ===
+        return _generate_groq(prompt, context)
+    else:
+        # === MODO OLLAMA (local) ===
+        return _generate_ollama(prompt, context)
+
+
+def _generate_groq(prompt: str, context: str) -> str:
+    """Genera respuesta usando Groq (para Streamlit Cloud)"""
+    try:
+        logger.info(f"🤖 Enviando a Groq ({GROQ_MODEL})...")
+        logger.info(f"   Contexto enviado: {len(context)} caracteres")
+        
+        headers = {
+            "Authorization": f"Bearer {GROQ_API_KEY}",
+            "Content-Type": "application/json"
+        }
+        
+        payload = {
+            "model": GROQ_MODEL,
+            "messages": [
+                {
+                    "role": "system",
+                    "content": "Eres un asistente útil que responde preguntas sobre documentos veterinarios. Responde en español."
+                },
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ],
+            "temperature": 0.1,
+            "max_tokens": 512
+        }
+        
+        response = requests.post(
+            "https://api.groq.com/openai/v1/chat/completions",
+            headers=headers,
+            json=payload,
+            timeout=90
+        )
+        response.raise_for_status()
+        
+        result = response.json()
+        answer = result["choices"][0]["message"]["content"].strip()
+        
+        logger.info(f"   Respuesta recibida: {len(answer)} caracteres")
+        
+        if not answer:
+            return "El modelo retornó una respuesta vacía. Intenta reformular la pregunta."
+
+        return answer
+
+    except requests.exceptions.ConnectionError:
+        return "❌ **Error de conexión**. Verifica tu conexión a internet."
+    except requests.exceptions.HTTPError as e:
+        error_msg = e.response.text if e.response else str(e)
+        return f"❌ **Error de Groq**: {error_msg}"
+    except Exception as e:
+        logger.error(f"Error inesperado en generate_response: {e}", exc_info=True)
+        return f"❌ **Error inesperado**: {str(e)}"
+
+
+def _generate_ollama(prompt: str, context: str) -> str:
+    """Genera respuesta usando Ollama (para desarrollo local)"""
+    OLLAMA_URL = "http://localhost:11434/api/generate"
+    OLLAMA_MODEL = "llama3.2:1b"
+    
     try:
         logger.info(f"🦙 Enviando a Ollama ({OLLAMA_MODEL})...")
         logger.info(f"   Contexto enviado: {len(context)} caracteres")
@@ -388,12 +460,9 @@ RESPUESTA:"""
             "```\nollama pull llama3.2:1b\n```"
         )
     except requests.exceptions.Timeout:
-        return (
-            "⏱️ **Timeout**: El modelo tardó más de 90 segundos.\n\n"
-            "Intenta con una pregunta más corta o espera un momento."
-        )
+        return "⏱️ **Timeout**: El modelo tardó más de 90 segundos."
     except requests.exceptions.HTTPError as e:
-        return f"❌ **Error HTTP de Ollama**: {e.response.status_code} - {e.response.text}"
+        return f"❌ **Error HTTP de Ollama**: {e.response.status_code}"
     except Exception as e:
         logger.error(f"Error inesperado en generate_response: {e}", exc_info=True)
         return f"❌ **Error inesperado**: {str(e)}"
@@ -432,7 +501,7 @@ def initialize_rag() -> Tuple[faiss.Index, List[str], SentenceTransformer]:
 
     logger.info(
         f"✅ Sistema RAG listo: {index.ntotal} vectores indexados | "
-        f"Modelo: {EMBEDDING_MODEL} | LLM: {OLLAMA_MODEL}"
+        f"Modelo: {EMBEDDING_MODEL} | LLM: {'Groq' if GROQ_API_KEY else 'Ollama'}"
     )
     return index, chunks, model
 
